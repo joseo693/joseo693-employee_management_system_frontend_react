@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { listEmployees } from "../services/EmployeeService";
+import { useNavigate } from "react-router-dom";
 
 // Using a React arrow function export component
 const EmployeeListComponent = () => {
@@ -9,6 +10,9 @@ const EmployeeListComponent = () => {
     // setEmployees - function that updates the state
     // useState([]) - initializes the state as an empty array
     const [employees, setEmployees] = useState([])
+
+    // assigning useNavigate hook to variable
+    const navigator = useNavigate();
 
     // useEffect - hook that allows some code to run when the component is first loaded
     useEffect( () => {
@@ -24,10 +28,15 @@ const EmployeeListComponent = () => {
         // [] - empty array makes it so the code is only run once
     }, [])
 
+    // 
+    function addNewEmployeeHandler() {
+        navigator("/add-employee");
+    }
 
     return (
         <div className="container">
             <h2 className="text-center">List of Employees</h2>
+            <button className="btn btn-primary mb-2" onClick={addNewEmployeeHandler} >Add Employee</button>
             <table className="table table-striped table-bordered">
                 <thead>
                     <tr>

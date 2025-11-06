@@ -1,4 +1,5 @@
 import './App.css'
+import EmployeeComponent from './components/EmployeeComponent'
 import EmployeeListComponent from './components/EmployeeListComponent'
 import FooterComponent from './components/FooterComponent'
 import HeaderComponent from './components/HeaderComponent'
@@ -16,6 +17,7 @@ function App() {
           {/* Route> - defines one “path” and the component to display for it. */}
           <Route path='/' element= { <EmployeeListComponent /> } />
           <Route path='/employees' element={ <EmployeeListComponent /> } />
+          <Route path='/add-employee' element={ <EmployeeComponent /> } />
 
         </Routes>
         <FooterComponent />

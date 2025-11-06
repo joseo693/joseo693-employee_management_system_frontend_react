@@ -1,29 +1,29 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import { listEmployees } from "../services/EmployeeService";
 
 // Using a React arrow function export component
 const EmployeeListComponent = () => {
 
-    // creating dummy data to display for now
-    const dummyData= [
-        {
-            "id" : 1,
-            "firstName" : "Jose",
-            "lastName" : "Ochoa",
-            "email" : "jose.ochoa@email.com"
-        },
-        {
-            "id" : 2,
-            "firstName" : "German",
-            "lastName" : "Rios",
-            "email" : "german.rios@email.com"
-        },
-        {
-            "id" : 3,
-            "firstName" : "Ale",
-            "lastName" : "Pina",
-            "email" : "ale.pina@email.com"
-        },
-    ]
+    // useState - hook, lets the component remember values between renders
+    // employees - state variable, where the data will stored (the list of employees)
+    // setEmployees - function that updates the state
+    // useState([]) - initializes the state as an empty array
+    const [employees, setEmployees] = useState([])
+
+    // useEffect - hook that allows some code to run when the component is first loaded
+    useEffect( () => {
+        // listEmployees() - calls function that uses Axios to get employee data from Spring Boot backend
+        // .then((response) => { ... }) - runs when the request succeeds
+        listEmployees().then( (response) => {
+            // response.data - list of employees
+            // updates the state variable employees with that data.
+            setEmployees(response.data);
+        }).catch( error => {
+            console.error(error);
+        })
+        // [] - empty array makes it so the code is only run once
+    }, [])
+
 
     return (
         <div className="container">
@@ -40,7 +40,7 @@ const EmployeeListComponent = () => {
                 <tbody>
                     {/* Javascript code mapping through  duummyData array and displaying each field as a row*/}
                     {
-                        dummyData.map(employee =>
+                        employees.map(employee =>
                             <tr key={employee.id}>
                                 <td>{employee.id}</td>
                                 <td>{employee.firstName}</td>

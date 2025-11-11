@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { createEmployee } from '../services/EmployeeService'
+import { useNavigate } from 'react-router-dom'
 
 const EmployeeComponent = () => {
 
@@ -16,12 +18,23 @@ const EmployeeComponent = () => {
     const emailHandler = (e) => { setEmail(e.target.value); }
 
     //
+    const navigator = useNavigate();
+
+    //
     function saveEmployee (e) {
         // prevents browser from doing its default action of page refresh or navigate away.
         e.preventDefault();
 
         const employee = {firstName, lastName, email}
         console.log(employee);
+
+        // calling createEmployee() from EmployeeService.js
+        createEmployee(employee).then( (response) => {
+            console.log(response.data);
+
+            // navigates back to the list of employees
+            navigator('/employees')
+        } )
     }
 
   return (

@@ -4,7 +4,8 @@ import axios from "axios";
 const REST_API_BASE_URL = "http://localhost:8080/api/employees";
 
 // arrow funtion 
-export const listEmployees = () => {
-    // axios.get() - sends an HTTP GET request to the given URL
-    return axios.get(REST_API_BASE_URL);
-}
+// axios.get() - sends an HTTP GET request to the given URL
+export const listEmployees = () => axios.get(REST_API_BASE_URL);
+
+// axios.post() - sends an HTTP POST request to the given URL
+export const createEmployee = (employee) => axios.post(REST_API_BASE_URL, employee)

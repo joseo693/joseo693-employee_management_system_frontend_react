@@ -28,9 +28,14 @@ const EmployeeListComponent = () => {
         // [] - empty array makes it so the code is only run once
     }, [])
 
-    // 
+    // navigates to Add Employee
     function addNewEmployeeHandler() {
-        navigator("/add-employee");
+        navigator('/add-employee');
+    }
+
+    // navigates to Update Employee with the id of the employee selected
+    function updateEmployee(id) {
+        navigator(`/edit-employee/${id}`)
     }
 
     return (
@@ -44,6 +49,7 @@ const EmployeeListComponent = () => {
                         <th>Employee First Name</th>
                         <th>Employee Last Name</th>
                         <th>Employee Email</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +61,9 @@ const EmployeeListComponent = () => {
                                 <td>{employee.firstName}</td>
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
+                                <td>
+                                    <button className="btn btn-info" onClick={ () => updateEmployee(employee.id) } >Update</button>
+                                </td>
                             </tr>
                         )
                     }

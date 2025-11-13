@@ -9,3 +9,6 @@ export const listEmployees = () => axios.get(REST_API_BASE_URL);
 
 // axios.post() - sends an HTTP POST request to the given URL
 export const createEmployee = (employee) => axios.post(REST_API_BASE_URL, employee)
+
+// axios.get() - sends an HTTP GET request using the provided employee ID
+export const getEmployeeById = (employeeId) => axios.get(REST_API_BASE_URL + '/' + employeeId); 

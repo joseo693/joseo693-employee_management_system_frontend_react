@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { createEmployee } from '../services/EmployeeService'
+import React, { useEffect, useState } from 'react'
+import { createEmployee, getEmployeeById } from '../services/EmployeeService'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const EmployeeComponent = () => {
@@ -19,6 +19,25 @@ const EmployeeComponent = () => {
         lastName: '',
         email: ''
     } )
+
+    // useEffect runs when the component loads
+    useEffect( () => {
+        // If there is an ID present, retrieve the employee with that ID
+        // If id exists ( /edit-employee/3) - editing an employee
+        // If id is undefined ( /add-employee) - adding a new employee
+        if(id) {
+            // calling getEmployee() from EmployeeService.js
+            getEmployeeById(id).then( (response) => {
+                // automatically updates the form so user sees the existing values
+                setFirstName(response.data.firstName);
+                setLastName(response.data.lastName);
+                setEmail(response.data.email);
+            }).catch( error => {
+                // catching any errors produced
+                console.error(error)
+            })
+        }
+    }, [id])
 
     // we can create arrow functions to be called onClick.
     // or we can pass the arrow function directly in  the onClick = {}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createEmployee, getEmployeeById } from '../services/EmployeeService'
+import { createEmployee, getEmployeeById, updateEmployeeById } from '../services/EmployeeService'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const EmployeeComponent = () => {
@@ -46,27 +46,47 @@ const EmployeeComponent = () => {
     const emailHandler = (e) => { setEmail(e.target.value); }
 
 
-    // gets called when the submit button is clicked to create a new employee
-    function saveEmployee (e) {
+    // gets called when the submit button is clicked to either create a new employee or update an existing employee
+    function saveEmployeeHandler (e) {
         // prevents browser from doing its default action of page refresh or navigate away
         e.preventDefault();
 
-        // if validateForm() = true, create Employee
+        // if validateForm() = true, continue with logic
         if( validateForm() ){
-
             const employee = {firstName, lastName, email}
             console.log(employee);
 
-            // calling createEmployee() from EmployeeService.js
-            createEmployee(employee).then( (response) => {
-                console.log(response.data);
+            // checking if there is an ID
+            if(id) {
+                // calling updateEmployeeHandler()
+                updateEmployeeHandler(id, employee)
+            } else {
+                // CREATE a brand new Employee
+                // calling createEmployee() from EmployeeService.js
+                createEmployee(employee).then( (response) => {
+                    console.log(response.data);
 
-                // navigates back to the list of employees
-                navigator('/employees')
-            } )
-
+                    // navigates back to the list of employees
+                    navigator('/employees')
+                } ).catch(error => {
+                    console.log(error);
+                })
+            }
         }
     }
+
+    // UPDATE the employee with the given ID
+    function updateEmployeeHandler (id, employee) {
+        // calling updateEmployeeById() from EmployeeService.js
+        updateEmployeeById(id, employee).then( (response) => {
+            console.log(response.data);
+            // navigates back to the list of employees
+            navigator('/employees');
+        }).catch(error => {
+            console.log(error);
+        })
+    }
+
 
     // Validating form data
     function validateForm () {
@@ -104,6 +124,7 @@ const EmployeeComponent = () => {
         // returns a simple true/false flag to tell submit function whether the form passed validation
         return valid;
     }
+
 
     // Dynamically changes the title header based on if there's an id
     function pageTitle() {
@@ -164,7 +185,7 @@ const EmployeeComponent = () => {
                             ></input>
                             { errors.email && <div className='invalid-feedback'>{errors.email}</div> }
                         </div>
-                        <button className='btn btn-success' onClick={saveEmployee}>Submit</button>
+                        <button className='btn btn-success' onClick={saveEmployeeHandler}>Submit</button>
 
                     </form>
                 </div>

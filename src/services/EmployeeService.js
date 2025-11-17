@@ -15,3 +15,6 @@ export const getEmployeeById = (employeeId) => axios.get(REST_API_BASE_URL + '/'
 
 // axios.put() - sends an HTTP PUT request using the provided employee ID
 export const updateEmployeeById = (employeeId, employee) => axios.put(REST_API_BASE_URL + '/' + employeeId, employee);
+
+// axios.delete() - sends an HTTP DELETE request using the provided employee ID
+export const deleteEmployeeById = (employeeId) => axios.delete(REST_API_BASE_URL + '/' + employeeId)

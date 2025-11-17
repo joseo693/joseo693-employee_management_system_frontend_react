@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { listEmployees } from "../services/EmployeeService";
+import { deleteEmployeeById, listEmployees } from "../services/EmployeeService";
 import { useNavigate } from "react-router-dom";
 
 // Using a React arrow function export component
@@ -16,6 +16,12 @@ const EmployeeListComponent = () => {
 
     // useEffect - hook that allows some code to run when the component is first loaded
     useEffect( () => {
+        getAllEmployees();
+        // [] - empty array makes it so the code is only run once
+    }, [])
+
+    // returns all employees
+    function getAllEmployees() {
         // listEmployees() - calls function that uses Axios to get employee data from Spring Boot backend
         // .then((response) => { ... }) - runs when the request succeeds
         listEmployees().then( (response) => {
@@ -25,8 +31,7 @@ const EmployeeListComponent = () => {
         }).catch( error => {
             console.error(error);
         })
-        // [] - empty array makes it so the code is only run once
-    }, [])
+    }
 
     // navigates to Add Employee
     function addNewEmployeeHandler() {
@@ -34,8 +39,21 @@ const EmployeeListComponent = () => {
     }
 
     // navigates to Update Employee with the id of the employee selected
-    function updateEmployee(id) {
+    function updateEmployeeHandler(id) {
         navigator(`/edit-employee/${id}`)
+    }
+    
+    // DELETEs the employee with the given ID
+    function deleteEmployeeHandler(id) {
+        console.log("Deleting Employee with id: " + id);
+        // calling deleteEmployeeById() from EmployeeService.js
+        deleteEmployeeById(id).then( (response) => {
+            // displaying all employees in db, to see updated list with deleted employee removed from list
+            getAllEmployees();
+        }).catch(error => {
+            console.log(error);
+        })
+        
     }
 
     return (
@@ -62,7 +80,10 @@ const EmployeeListComponent = () => {
                                 <td>{employee.lastName}</td>
                                 <td>{employee.email}</td>
                                 <td>
-                                    <button className="btn btn-info" onClick={ () => updateEmployee(employee.id) } >Update</button>
+                                    <button className="btn btn-info" onClick={ () => updateEmployeeHandler(employee.id) } >Update</button>
+                                    <button className="btn btn-danger" onClick={ ()=> deleteEmployeeHandler(employee.id) } 
+                                        style={{marginLeft: '10px'}}    
+                                    >Delete</button>
                                 </td>
                             </tr>
                         )

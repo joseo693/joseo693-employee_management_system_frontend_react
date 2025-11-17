@@ -87,7 +87,7 @@ const EmployeeComponent = () => {
         })
     }
 
-
+    
     // Validating form data
     function validateForm () {
         let valid = true;
